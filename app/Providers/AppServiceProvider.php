@@ -28,6 +28,10 @@ class AppServiceProvider extends ServiceProvider
             $oauth = new OAuth;
             $token = $oauth->getToken();
 
+            if (! $token) {
+                throw new Exception('Unconnected');
+            }
+
             return Http::baseUrl($token['api_domain'])
                 ->withToken($token['access_token'], 'Zoho-oauthtoken')
                 ->retry(3, 0, function (Exception $exception, PendingRequest $request) use($oauth, $token) {

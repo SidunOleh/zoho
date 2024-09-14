@@ -9,6 +9,18 @@ window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
+window.axios.interceptors.response.use(response => {
+    return response
+}, async err => {
+    if (err.response.status == 401) {
+        localStorage.removeItem('zoho')
+
+        location.reload()
+    }
+
+    return Promise.reject(err)
+})
+
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

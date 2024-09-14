@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Services\Zoho\OAuth;
+use App\Services\Zoho\UnconnectedException;
 use Exception;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\RequestException;
@@ -29,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
             $token = $oauth->getToken();
 
             if (! $token) {
-                throw new Exception('Unconnected');
+                throw new UnconnectedException();
             }
 
             return Http::baseUrl($token['api_domain'])

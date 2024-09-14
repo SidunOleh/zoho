@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\HandleFormRequest;
 use App\Services\Zoho\Records;
+use App\Services\Zoho\UnconnectedException;
 use Exception;
 
 class HandleFormController extends Controller
@@ -25,6 +26,8 @@ class HandleFormController extends Controller
             (new Records('Deals'))->insert($validated['deal']);
 
             return response(['message' => 'Successfully created.']);
+        } catch (UnconnectedException $e) {
+            return response(['message' => 'Unconnected',], 401);
         } catch (Exception $e) {
             return response(['message' => $e->getMessage(),], 400);
         }
